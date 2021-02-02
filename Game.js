@@ -1,3 +1,7 @@
+"use strict";
+
+const prompt = require("prompt-sync")();
+const { Player } = require("./Player");
 class Game {
   constructor() {
     this.playerOne = new Player(prompt("Enter name for player 1: "));
