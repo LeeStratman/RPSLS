@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/LeeStratman/RPSLS/issues"
   },
-  "homepage": "https://github.com/LeeStratman/RPSLS#readme"
+  "homepage": "https://github.com/LeeStratman/RPSLS#readme",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
 }
