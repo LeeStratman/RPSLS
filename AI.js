@@ -7,9 +7,9 @@ class AI extends Player {
     super("AI");
   }
 
-  chooseGesture() {
-    let index = this.randomNumber(this.gestures.length);
-    return this.gestures[index];
+  chooseGesture(gestures) {
+    let index = this.randomNumber(gestures.length);
+    return gestures[index];
   }
 
   randomNumber(max = 1) {

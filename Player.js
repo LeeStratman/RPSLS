@@ -1,18 +1,17 @@
 "use strict";
 
 const { UI } = require("./UserInterface");
-const { getGestures } = require("./gestures");
 
 class Player {
   constructor(name) {
     this.name = name;
     this.score = 0;
-    this.gestures = getGestures();
+    this.selectedGesture = null;
   }
 
-  chooseGesture() {
-    let index = UI.choose("Choose an option: ", this.gestures);
-    return this.gestures[Number(index) - 1];
+  chooseGesture(gestures) {
+    let index = UI.choose("Choose an option: ", gestures);
+    this.selectedGesture = gestures[Number(index) - 1];
   }
 }
 

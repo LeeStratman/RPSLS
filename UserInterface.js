@@ -12,13 +12,17 @@ class UserInterface {
     return response;
   }
 
-  choose(message, options = []) {
+  choose(message, options = null) {
+    if (!options) {
+      return false;
+    }
+
     do {
       console.log(this.displayOptions(options));
       var response = prompt(message);
     } while (!this.isValidOption(response, options));
 
-    return response;
+    return options[Number(response) - 1];
   }
 
   display(...messages) {
