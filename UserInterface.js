@@ -39,4 +39,4 @@ class UserInterface {
   isValidOption(input, options) {}
 }
 
-module.exports = UserInterface;
+module.exports.UI = UserInterface;
