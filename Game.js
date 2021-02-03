@@ -33,20 +33,23 @@ class Game {
 
   startGame() {
     this.displayRules();
+    let selectedGestures = this.selectGestures();
   }
 
   displayRules() {
     this.UI.display(
-      "Rock Paper Scissors Lizard Spock is played between two people."
+      "Rock Paper Scissors Lizard Spock is played between two people.",
+      "Each player will select a gesture that represents one of the following: ",
+      getGestureList(),
+      "The outcome of the game is determined by the following rules: ",
+      getGestureRules()
     );
-    this.UI.display(
-      "Each player will select a gesture that represents one of the following: "
-    );
-    this.UI.display(getGestureList());
-    this.UI.display(
-      "The outcome of the game is determined by the following rules: "
-    );
-    this.UI.display(getGestureRules());
+  }
+
+  selectGestures() {
+    return this.players.map((player, index) => {
+      return player.chooseGesture();
+    });
   }
 
   endGame() {}

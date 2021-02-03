@@ -14,13 +14,14 @@ const rules = [
   "Spock vaporizes Rock",
 ];
 
-getGestureList() {
-	return gestures
-		.map((gesture, index) => `${index + 1}: ${gesture}`)
-		.join("\n");
+function getGestureList() {
+  return gestures
+    .map((gesture, index) => `${index + 1}: ${gesture}`)
+    .join("\n");
 }
 
-getGestureRules() {
-	return rules.map((rule, index) => `${index + 1}: ${rule}`).join("\n");
+function getGestureRules() {
+  return rules.map((rule, index) => `${index + 1}: ${rule}`).join("\n");
 }
-module.exports = { getGestureList, getGestureRules };
+
+module.exports = { gestures, getGestureList, getGestureRules };
