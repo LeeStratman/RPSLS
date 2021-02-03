@@ -13,4 +13,14 @@ const rules = [
   "Paper disproves Spock",
   "Spock vaporizes Rock",
 ];
-module.exports = { gestures, rules };
+
+getGestureList() {
+	return gestures
+		.map((gesture, index) => `${index + 1}: ${gesture}`)
+		.join("\n");
+}
+
+getGestureRules() {
+	return rules.map((rule, index) => `${index + 1}: ${rule}`).join("\n");
+}
+module.exports = { getGestureList, getGestureRules };

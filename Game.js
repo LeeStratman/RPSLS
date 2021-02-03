@@ -3,7 +3,7 @@
 const { UI } = require("./UserInterface");
 const { Player } = require("./Player");
 const { AI } = require("./AI");
-const { gestures, rules } = require("./gestures");
+const { getGestureList, getGestureRules } = require("./gestures");
 class Game {
   constructor() {
     this.UI = new UI();
@@ -42,11 +42,11 @@ class Game {
     this.UI.display(
       "Each player will select a gesture that represents one of the following: "
     );
-    this.UI.display(this.getGestureList());
+    this.UI.display(getGestureList());
     this.UI.display(
       "The outcome of the game is determined by the following rules: "
     );
-    this.UI.display(this.getGestureRules());
+    this.UI.display(getGestureRules());
   }
 
   endGame() {}
@@ -54,16 +54,6 @@ class Game {
   calculateWinner() {}
 
   isOver() {}
-
-  getGestureList() {
-    return gestures
-      .map((gesture, index) => `${index + 1}: ${gesture}`)
-      .join("\n");
-  }
-
-  getGestureRules() {
-    return rules.map((rule, index) => `${index + 1}: ${rule}`).join("\n");
-  }
 }
 
 module.exports.Game = Game;
