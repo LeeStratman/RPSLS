@@ -27,6 +27,10 @@ class UserInterface {
     });
   }
 
+  list(items) {
+    console.log(items.map((item, index) => `${index + 1}: ${item}`).join("\n"));
+  }
+
   displayOptions(options) {
     return options
       .map((option, index) => {
@@ -49,4 +53,6 @@ class UserInterface {
   }
 }
 
-module.exports.UI = UserInterface;
+let UI = new UserInterface();
+
+module.exports.UI = UI;

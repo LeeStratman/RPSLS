@@ -3,17 +3,17 @@
 const { UI } = require("./UserInterface");
 const { Player } = require("./Player");
 const { AI } = require("./AI");
-const { getGestureList, getGestureRules } = require("./gestures");
+const { getGestures, getGestureRules } = require("./gestures");
+
 class Game {
   constructor() {
-    this.UI = new UI();
     this.setupGame();
     this.createPlayers();
   }
 
   setupGame() {
     this.isSingle =
-      this.UI.choose("Please select game mode: ", [
+      UI.choose("Please select game mode: ", [
         "Single Player",
         "Multiplayer",
       ]) === "1"
@@ -25,25 +25,28 @@ class Game {
   createPlayers() {
     this.players = [];
 
-    this.players.push(new Player(this.UI.ask("Enter name for player 1: ")));
+    this.players.push(new Player(UI.ask("Enter name for player 1: ")));
     this.isSingle
       ? this.players.push(new AI())
-      : this.players.push(new Player(this.UI.ask("Enter name for player 2: ")));
+      : this.players.push(new Player(UI.ask("Enter name for player 2: ")));
   }
 
   startGame() {
     this.displayRules();
     let selectedGestures = this.selectGestures();
+    this.calculateWinner(...selectedGestures);
   }
 
   displayRules() {
-    this.UI.display(
+    UI.display(
       "Rock Paper Scissors Lizard Spock is played between two people.",
-      "Each player will select a gesture that represents one of the following: ",
-      getGestureList(),
-      "The outcome of the game is determined by the following rules: ",
-      getGestureRules()
+      "Each player will select a gesture that represents one of the following: "
     );
+    UI.list(getGestures());
+    UI.display(
+      "The outcome of the game is determined by the following rules: "
+    );
+    UI.list(getGestureRules());
   }
 
   selectGestures() {
@@ -54,7 +57,7 @@ class Game {
 
   endGame() {}
 
-  calculateWinner() {}
+  calculateWinner(gesture1, gesture2) {}
 
   isOver() {}
 }
