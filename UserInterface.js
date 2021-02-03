@@ -14,7 +14,8 @@ class UserInterface {
 
   choose(options = []) {
     do {
-      var response = prompt(this.displayOptions(options));
+      console.log(this.displayOptions(options));
+      var response = prompt();
     } while (!this.isValidOption(response, options));
 
     return response;
@@ -27,16 +28,23 @@ class UserInterface {
   displayOptions(options) {
     return options
       .map((option, index) => {
-        return `${index}: ${option}`;
+        return `${index + 1}: ${option}`;
       })
       .join("\n");
   }
 
-  isNumber(input) {}
+  isNumber(input) {
+    let number = Number(input);
+    return !isNaN(number);
+  }
 
-  isString(input) {}
+  isString(input) {
+    return input ? true : false;
+  }
 
-  isValidOption(input, options) {}
+  isValidOption(input, options) {
+    return Number(input) <= options.length;
+  }
 }
 
 module.exports.UI = UserInterface;
