@@ -21,8 +21,10 @@ class UserInterface {
     return response;
   }
 
-  display(message) {
-    console.log(message);
+  display(...messages) {
+    messages.forEach((message) => {
+      console.log(message);
+    });
   }
 
   displayOptions(options) {
