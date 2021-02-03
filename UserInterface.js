@@ -12,10 +12,10 @@ class UserInterface {
     return response;
   }
 
-  choose(options = []) {
+  choose(message, options = []) {
     do {
       console.log(this.displayOptions(options));
-      var response = prompt();
+      var response = prompt(message);
     } while (!this.isValidOption(response, options));
 
     return response;

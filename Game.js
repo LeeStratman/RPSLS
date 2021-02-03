@@ -12,7 +12,12 @@ class Game {
 
   setupGame() {
     this.isSingle =
-      this.UI.choose(["Single Player", "Multiplayer"]) === "1" ? true : false;
+      this.UI.choose("Please select game mode: ", [
+        "Single Player",
+        "Multiplayer",
+      ]) === "1"
+        ? true
+        : false;
     this.rounds = 5;
   }
 
