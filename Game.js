@@ -6,18 +6,38 @@ const { AI } = require("./AI");
 const { gestures, rules, getWinningGesture } = require("./gestures");
 
 class Game {
-  modes = ["Single Player", "Multiplayer"];
-  gestures = gestures;
-  rules = rules;
-
   constructor() {
-    this.rounds = 5;
+    this.name = "RPSLS";
+    this.modes = ["Single Player", "Multiplayer"];
+    this.gestures = gestures;
+    this.rules = rules;
+    this.maxTotalScore = 5;
+    this.round = 0;
+  }
+
+  startGame() {
+    this.welcomeMessage();
     this.setupGame();
     this.createPlayers();
+    this.displayRules();
+    while (!this.isOver()) {
+      this.chooseGestures();
+      this.calculateWinner();
+    }
+  }
+
+  welcomeMessage() {
+    UI.display(
+      "",
+      "#################",
+      `Welcome to ${this.name}`,
+      "#################",
+      ""
+    );
   }
 
   setupGame() {
-    let mode = UI.choose("Please select game mode: ", this.modes);
+    let mode = UI.choose("Enter game mode: ", this.modes);
     this.isSingle = mode === this.modes[0] ? true : false;
   }
 
@@ -30,22 +50,11 @@ class Game {
       : this.players.push(new Player(UI.ask("Enter name for player 2: ")));
   }
 
-  startGame() {
-    this.displayRules();
-    while (!this.isOver()) {
-      this.chooseGestures();
-      this.calculateWinner();
-    }
-  }
-
   displayRules() {
     UI.display(
       "Rock Paper Scissors Lizard Spock is played between two people.",
-      "Each player will select a gesture that represents one of the following: "
-    );
-    UI.list(this.gestures);
-    UI.display(
-      "The outcome of the game is determined by the following rules: "
+      "During every round, each player will select a gesture (rock, paper, scissors, lizard, spock).",
+      "The round winner is determined based on the following rules: "
     );
     UI.list(this.rules);
   }
@@ -77,6 +86,8 @@ class Game {
     this.displayScores();
   }
 
+  displayRoundResults() {}
+
   displayScores() {
     this.players.forEach((player) =>
       console.log(`${player.name}: ${player.score}`)
@@ -85,9 +96,9 @@ class Game {
 
   isOver() {
     let isOver = false;
-    let maxScore = this.rounds / 2;
+    let maxSingleScore = this.maxTotalScore / 2;
     this.players.forEach((player) => {
-      if (player.score > maxScore) {
+      if (player.score > maxSingleScore) {
         isOver = true;
       }
     });
