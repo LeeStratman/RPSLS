@@ -1,6 +1,7 @@
 "use strict";
 
 const prompt = require("prompt-sync")();
+const chalk = require("chalk");
 
 class UserInterface {
   ask(question, isNumber = false) {
@@ -18,6 +19,7 @@ class UserInterface {
     }
 
     do {
+      console.log(chalk.green("Please choose an option below: "));
       console.log(this.displayOptions(options));
       var response = prompt(message);
     } while (!this.isValidOption(response, options));
@@ -53,10 +55,18 @@ class UserInterface {
   }
 
   isValidOption(input, options) {
-    return Number(input) <= options.length;
+    let isValid = Number(input) <= options.length;
+
+    if (!isValid) {
+      this.displayError("Invalid option. Please try again.");
+    }
+
+    return isValid;
+  }
+
+  displayError(message) {
+    console.log(chalk.red.bold(message));
   }
 }
 
-let UI = new UserInterface();
-
-module.exports.UI = UI;
+module.exports.UI = new UserInterface();
