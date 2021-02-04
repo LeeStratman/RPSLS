@@ -3,15 +3,12 @@
 const { UI } = require("./UserInterface");
 const { Player } = require("./Player");
 const { AI } = require("./AI");
-const {
-  getGestures,
-  getGestureRules,
-  getWinningGesture,
-} = require("./gestures");
+const { gestures, rules, getWinningGesture } = require("./gestures");
 
 class Game {
   modes = ["Single Player", "Multiplayer"];
-  gestures = getGestures();
+  gestures = gestures;
+  rules = rules;
 
   constructor() {
     this.rounds = 5;
@@ -50,7 +47,7 @@ class Game {
     UI.display(
       "The outcome of the game is determined by the following rules: "
     );
-    UI.list(getGestureRules());
+    UI.list(this.rules);
   }
 
   chooseGestures() {

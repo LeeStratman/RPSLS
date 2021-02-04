@@ -3,31 +3,19 @@
 const gestures = ["rock", "paper", "scissors", "lizard", "spock"];
 
 const rules = [
-  ["rock", "crushes", "scissors"],
-  ["rock", "crushes", "lizard"],
-  ["scissors", "cuts", "paper"],
-  ["scissors", "decapitates", "lizard"],
-  ["paper", "covers", "rock"],
-  ["paper", "disproves", "spock"],
-  ["lizard", "poisons", "spock"],
-  ["lizard", "eats", "paper"],
-  ["spock", "smashes", "scissors"],
-  ["spock", "vaporizes", "rock"],
+  "rock crushes scissors",
+  "rock crushes lizard",
+  "scissors cuts paper",
+  "scissors decapitates lizard",
+  "paper covers rock",
+  "paper disproves spock",
+  "lizard poisons spock",
+  "lizard eats paper",
+  "spock smashes scissors",
+  "spock vaporizes rock",
 ];
 
-function getGestures() {
-  return gestures;
-}
-
-function getGestureRules() {
-  return rules.map((rule) => rule.join(" "));
-}
-
 function getWinningRule(gesture1, gesture2) {
-  if (gesture1 === gesture2) {
-    return false;
-  }
-
   return rules
     .filter((rule) => {
       if (rule.includes(gesture1) && rule.includes(gesture2)) {
@@ -36,20 +24,26 @@ function getWinningRule(gesture1, gesture2) {
 
       return false;
     })
-    .flat();
+    .join();
 }
 
 function getWinningGesture(gesture1, gesture2) {
+  // Tie.
+  if (gesture1 === gesture2) {
+    return false;
+  }
+
   let rule = getWinningRule(gesture1, gesture2);
 
+  // No rule exists.
   if (!rule) {
     return false;
   }
 
   return {
-    gesture: rule[0],
-    rule: rule.join(" "),
+    gesture: rule.split(" ")[0],
+    rule,
   };
 }
 
-module.exports = { getGestures, getGestureRules, getWinningGesture };
+module.exports = { gestures, rules, getWinningGesture };
