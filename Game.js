@@ -17,12 +17,14 @@ class Game {
 
   startGame() {
     this.welcomeMessage();
+    this.displayRules();
     this.setupGame();
     this.createPlayers();
-    this.displayRules();
     while (!this.isOver()) {
+      this.displayRound();
       this.chooseGestures();
       this.calculateWinner();
+      this.displayRoundResults();
     }
   }
 
@@ -52,11 +54,21 @@ class Game {
 
   displayRules() {
     UI.display(
-      "Rock Paper Scissors Lizard Spock is played between two people.",
+      "Rock Paper Scissors Lizard Spock is played between two people or against the computer.",
       "During every round, each player will select a gesture (rock, paper, scissors, lizard, spock).",
       "The round winner is determined based on the following rules: "
     );
     UI.list(this.rules);
+  }
+
+  displayRound() {
+    UI.display(
+      "",
+      "--------------------",
+      `Round: ${this.round}`,
+      "--------------------",
+      ""
+    );
   }
 
   chooseGestures() {
