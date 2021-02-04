@@ -9,11 +9,11 @@ class AI extends Player {
 
   chooseGesture(gestures) {
     let index = this.randomNumber(gestures.length);
-    return gestures[index];
+    this.selectedGesture = gestures[index];
   }
 
   randomNumber(max = 1) {
-    return Math.floor(Math.random() * max) + 1;
+    return Math.floor(Math.random() * max);
   }
 }
 

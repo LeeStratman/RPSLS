@@ -10,8 +10,14 @@ class Player {
   }
 
   chooseGesture(gestures) {
-    let index = UI.choose("Choose an option: ", gestures);
-    this.selectedGesture = gestures[Number(index) - 1];
+    this.selectedGesture = UI.choose(
+      `${this.name} - Choose an option: `,
+      gestures
+    );
+  }
+
+  incrementScore() {
+    this.score++;
   }
 }
 

@@ -3,13 +3,18 @@
 const { UI } = require("./UserInterface");
 const { Player } = require("./Player");
 const { AI } = require("./AI");
-const { getGestures, getGestureRules } = require("./gestures");
+const {
+  getGestures,
+  getGestureRules,
+  getWinningGesture,
+} = require("./gestures");
 
 class Game {
   modes = ["Single Player", "Multiplayer"];
   gestures = getGestures();
 
   constructor() {
+    this.rounds = 5;
     this.setupGame();
     this.createPlayers();
   }
@@ -30,8 +35,10 @@ class Game {
 
   startGame() {
     this.displayRules();
-    this.selectGestures();
-    this.calculateWinner();
+    while (!this.isOver()) {
+      this.chooseGestures();
+      this.calculateWinner();
+    }
   }
 
   displayRules() {
@@ -46,7 +53,7 @@ class Game {
     UI.list(getGestureRules());
   }
 
-  selectGestures() {
+  chooseGestures() {
     this.players.forEach((player) => {
       player.chooseGesture(this.gestures);
     });
@@ -54,9 +61,42 @@ class Game {
 
   endGame() {}
 
-  calculateWinner() {}
+  calculateWinner() {
+    let gestures = this.players.map((player) => player.selectedGesture);
+    let winningGesture = getWinningGesture(...gestures);
 
-  isOver() {}
+    if (!winningGesture) {
+      // TODO: Handle ties.
+      return;
+    }
+
+    this.players.forEach((player) => {
+      if (player.selectedGesture === winningGesture.gesture) {
+        player.incrementScore();
+      }
+    });
+
+    UI.display(winningGesture.rule);
+    this.displayScores();
+  }
+
+  displayScores() {
+    this.players.forEach((player) =>
+      console.log(`${player.name}: ${player.score}`)
+    );
+  }
+
+  isOver() {
+    let isOver = false;
+    let maxScore = this.rounds / 2;
+    this.players.forEach((player) => {
+      if (player.score > maxScore) {
+        isOver = true;
+      }
+    });
+
+    return isOver;
+  }
 }
 
 module.exports.Game = Game;

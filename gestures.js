@@ -1,64 +1,55 @@
 "use strict";
 
-// const gestures = ["rock", "scissors", "paper", "lizard", "spock"];
-const gestures = [
-  {
-    value: "rock",
-    defeats: [
-      { action: "crushes", gesture: "scissors" },
-      { action: "crushes", gesture: "lizard" },
-    ],
-  },
-  {
-    value: "scissors",
-    defeats: [
-      { action: "cuts", gesture: "paper" },
-      { action: "decapitates", gesture: "lizard" },
-    ],
-  },
-  {
-    value: "paper",
-    defeats: [
-      { action: "covers", gesture: "rock" },
-      { action: "disproves", gesture: "spock" },
-    ],
-  },
-  {
-    value: "lizard",
-    defeats: [
-      { action: "poisons", gesture: "spock" },
-      { action: "eats", gesture: "paper" },
-    ],
-  },
-  {
-    value: "spock",
-    defeats: [
-      { action: "smashes", gesture: "scissors" },
-      { action: "vaporizes", gesture: "rock" },
-    ],
-  },
+const gestures = ["rock", "paper", "scissors", "lizard", "spock"];
+
+const rules = [
+  ["rock", "crushes", "scissors"],
+  ["rock", "crushes", "lizard"],
+  ["scissors", "cuts", "paper"],
+  ["scissors", "decapitates", "lizard"],
+  ["paper", "covers", "rock"],
+  ["paper", "disproves", "spock"],
+  ["lizard", "poisons", "spock"],
+  ["lizard", "eats", "paper"],
+  ["spock", "smashes", "scissors"],
+  ["spock", "vaporizes", "rock"],
 ];
 
 function getGestures() {
-  return gestures.map((gesture) => gesture.value);
-}
-
-function getGestureList() {
-  return getGestures()
-    .map((gesture, index) => `${index + 1}: ${gesture}`)
-    .join("\n");
+  return gestures;
 }
 
 function getGestureRules() {
-  return gestures
-    .map((gesture) => {
-      return gesture.defeats
-        .map((defeat) => {
-          return `${gesture.value} ${defeat.action} ${defeat.gesture}`;
-        })
-        .join("\n");
-    })
-    .join("\n");
+  return rules.map((rule) => rule.join(" "));
 }
 
-module.exports = { getGestures, getGestureList, getGestureRules };
+function getWinningRule(gesture1, gesture2) {
+  if (gesture1 === gesture2) {
+    return false;
+  }
+
+  return rules
+    .filter((rule) => {
+      if (rule.includes(gesture1) && rule.includes(gesture2)) {
+        return true;
+      }
+
+      return false;
+    })
+    .flat();
+}
+
+function getWinningGesture(gesture1, gesture2) {
+  let rule = getWinningRule(gesture1, gesture2);
+
+  if (!rule) {
+    return false;
+  }
+
+  return {
+    gesture: rule[0],
+    rule: rule.join(" "),
+  };
+}
+
+module.exports = { getGestures, getGestureRules, getWinningGesture };
