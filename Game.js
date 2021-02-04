@@ -8,7 +8,8 @@ const Rules = require("./Rules");
 class Game {
   constructor() {
     this.name = "RPSLS";
-    this.modes = ["Single Player", "Multiplayer"];
+    this.mode = null;
+    this.players = [];
     this.rules = new Rules();
     this.maxTotalScore = 5;
     this.round = 0;
@@ -43,17 +44,40 @@ class Game {
   }
 
   setupGame() {
-    let mode = UI.choose("Enter game mode: ", this.modes);
-    this.isSingle = mode === this.modes[0] ? true : false;
+    this.mode = UI.choose("Enter game mode: ", [
+      "Single Player",
+      "Multiplayer",
+      "Simulation",
+    ]);
   }
 
   createPlayers() {
-    this.players = [];
+    switch (this.mode) {
+      case "Single Player":
+        this.addPlayer("human");
+        this.addPlayer("ai");
+        break;
+      case "Multiplayer":
+        this.addPlayer("human");
+        this.addPlayer("human");
+        break;
+      case "Simulation":
+        this.addPlayer("ai");
+        this.addPlayer("ai");
+        break;
+    }
+  }
 
-    this.players.push(new Player(UI.ask("Enter name for player 1: ")));
-    this.isSingle
-      ? this.players.push(new AI())
-      : this.players.push(new Player(UI.ask("Enter name for player 2: ")));
+  addPlayer(type = "human") {
+    this.players.push(
+      type == "human"
+        ? new Player(this.askForPlayerName())
+        : new AI(`Player ${this.players.length + 1}`)
+    );
+  }
+
+  askForPlayerName() {
+    return UI.ask(`Enter name for player ${this.players.length + 1}: `);
   }
 
   displayRules() {
@@ -110,7 +134,7 @@ class Game {
   displayRoundResults() {
     const { player, rule } = this.history[this.round];
     UI.display(
-      "4",
+      "",
       `ROUND ${this.round + 1} RESULTS: `,
       `Winner: ${player}`,
       `${rule}`,
