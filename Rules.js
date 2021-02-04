@@ -18,7 +18,7 @@ class Rules {
 
   getRule(gesture1, gesture2) {
     return gesture1 === gesture2
-      ? `${gesture1} ties ${gesture2}`
+      ? [gesture1, "ties", gesture2]
       : this.rules.find(
           (rule) => rule.includes(gesture1) && rule.includes(gesture2)
         );

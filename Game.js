@@ -117,7 +117,7 @@ class Game {
   calculateWinner() {
     let gestures = this.players.map((player) => player.selectedGesture);
     const [winner, action, loser] = this.rules.getRule(...gestures);
-    let roundResults = { player: "", rule: `${winner} ${action} ${loser}` };
+    let roundResults = { player: "TIE", rule: `${winner} ${action} ${loser}` };
 
     if (action !== "ties") {
       this.players.forEach((player) => {
