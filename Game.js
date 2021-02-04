@@ -3,16 +3,16 @@
 const { UI } = require("./UserInterface");
 const { Player } = require("./Player");
 const { AI } = require("./AI");
-const { gestures, rules, getWinningGesture } = require("./gestures");
+const Rules = require("./Rules");
 
 class Game {
   constructor() {
     this.name = "RPSLS";
     this.modes = ["Single Player", "Multiplayer"];
-    this.gestures = gestures;
-    this.rules = rules;
+    this.rules = new Rules();
     this.maxTotalScore = 5;
     this.round = 0;
+    this.history = [];
   }
 
   startGame() {
@@ -20,12 +20,16 @@ class Game {
     this.displayRules();
     this.setupGame();
     this.createPlayers();
+
     while (!this.isOver()) {
       this.displayRound();
       this.chooseGestures();
       this.calculateWinner();
       this.displayRoundResults();
+      this.incrementRounds();
     }
+
+    this.displayGameResults();
   }
 
   welcomeMessage() {
@@ -54,18 +58,25 @@ class Game {
 
   displayRules() {
     UI.display(
+      "DIRECTIONS:",
       "Rock Paper Scissors Lizard Spock is played between two people or against the computer.",
-      "During every round, each player will select a gesture (rock, paper, scissors, lizard, spock).",
-      "The round winner is determined based on the following rules: "
+      `During every round, each player will select a gesture (${this.rules
+        .gestures()
+        .join(", ")}).`,
+      "The round winner is determined based on the following rules: ",
+      ""
     );
-    UI.list(this.rules);
+
+    UI.list(this.rules.list());
+
+    UI.display("");
   }
 
   displayRound() {
     UI.display(
       "",
       "--------------------",
-      `Round: ${this.round}`,
+      `Round: ${this.round + 1}`,
       "--------------------",
       ""
     );
@@ -73,7 +84,7 @@ class Game {
 
   chooseGestures() {
     this.players.forEach((player) => {
-      player.chooseGesture(this.gestures);
+      player.chooseGesture(this.rules.gestures());
     });
   }
 
@@ -81,29 +92,43 @@ class Game {
 
   calculateWinner() {
     let gestures = this.players.map((player) => player.selectedGesture);
-    let winningGesture = getWinningGesture(...gestures);
+    const [winner, action, loser] = this.rules.getRule(...gestures);
+    let roundResults = { player: "", rule: `${winner} ${action} ${loser}` };
 
-    if (!winningGesture) {
-      // TODO: Handle ties.
-      return;
+    if (action !== "ties") {
+      this.players.forEach((player) => {
+        if (player.selectedGesture === winner) {
+          player.incrementScore();
+          roundResults.player = player.name;
+        }
+      });
     }
 
-    this.players.forEach((player) => {
-      if (player.selectedGesture === winningGesture.gesture) {
-        player.incrementScore();
-      }
-    });
+    this.history.push(roundResults);
+  }
 
-    UI.display(winningGesture.rule);
+  displayRoundResults() {
+    const { player, rule } = this.history[this.round];
+    UI.display(
+      "4",
+      `ROUND ${this.round + 1} RESULTS: `,
+      `Winner: ${player}`,
+      `${rule}`,
+      ""
+    );
     this.displayScores();
   }
 
-  displayRoundResults() {}
+  incrementRounds() {
+    this.round++;
+  }
 
   displayScores() {
-    this.players.forEach((player) =>
-      console.log(`${player.name}: ${player.score}`)
-    );
+    let scores = this.players
+      .map((player) => `${player.name}: ${player.score}`)
+      .join("\n");
+
+    UI.display("CURRENT SCORES:", scores);
   }
 
   isOver() {
@@ -117,6 +142,8 @@ class Game {
 
     return isOver;
   }
+
+  displayGameResults() {}
 }
 
 module.exports.Game = Game;
