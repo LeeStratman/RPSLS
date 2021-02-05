@@ -55,7 +55,7 @@ class UserInterface {
   }
 
   isValidOption(input, options) {
-    let isValid = Number(input) <= options.length;
+    let isValid = input && Number(input) <= options.length;
 
     if (!isValid) {
       this.displayError("Invalid option. Please try again.");
@@ -69,4 +69,4 @@ class UserInterface {
   }
 }
 
-module.exports.UI = new UserInterface();
+module.exports = new UserInterface();

@@ -1,6 +1,6 @@
 "use strict";
 
-const { UI } = require("./UserInterface");
+const UI = require("./UserInterface");
 
 class Player {
   constructor(name) {
@@ -21,4 +21,4 @@ class Player {
   }
 }
 
-module.exports.Player = Player;
+module.exports = Player;

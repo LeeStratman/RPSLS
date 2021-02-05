@@ -1,14 +1,14 @@
 "use strict";
 
-const { UI } = require("./UserInterface");
-const { Player } = require("./Player");
-const { AI } = require("./AI");
+const UI = require("./UserInterface");
+const Player = require("./Player");
+const AI = require("./AI");
 const Rules = require("./Rules");
 
 class Game {
   constructor() {
     this.name = "RPSLS";
-    this.mode = null;
+    this.mode = "Simulation";
     this.players = [];
     this.rules = new Rules();
     this.maxTotalScore = 5;

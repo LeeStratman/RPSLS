@@ -1,6 +1,6 @@
 "use strict";
 
-const { Player } = require("./Player");
+const Player = require("./Player");
 
 class AI extends Player {
   constructor(name = "AI") {
@@ -17,4 +17,4 @@ class AI extends Player {
   }
 }
 
-module.exports.AI = AI;
+module.exports = AI;
