@@ -112,8 +112,6 @@ class Game {
     });
   }
 
-  endGame() {}
-
   calculateWinner() {
     let gestures = this.players.map((player) => player.selectedGesture);
     const [winner, action, loser] = this.rules.getRule(...gestures);
@@ -167,7 +165,17 @@ class Game {
     return isOver;
   }
 
-  displayGameResults() {}
+  displayGameResults() {
+    UI.display(
+      "",
+      "##########################################",
+      "GAME SUMMARY"
+    );
+    this.history.forEach((round, index) => {
+      UI.display(`ROUND ${index + 1}: Winner: ${round.player} ${round.rule}`);
+    });
+    UI.display("##########################################", "");
+  }
 }
 
 module.exports.Game = Game;
